@@ -3105,7 +3105,23 @@ local function GetSummonTarget()
 
     local workspaceName = SummonMap[selected] or (selected .. "Boss")
 	local current, max = GetCurrentPity()
-	if (current >= (max - 1)) then return nil end
+	if (current >= (max - 1)) then
+		for _, npc in pairs(PATH.Mobs:GetChildren()) do
+            local name = npc.Name
+            if name:find("Boss") and name:find("Shinobi") and not table.find(Tables.MiniBossList, name) then
+                if IsValidTarget(npc) then
+                    local island = "Boss"
+                    for dName, iName in pairs(Shared.BossTIMap) do
+                        if IsStrictBossMatch(name, dName) then
+                            island = iName
+                            break
+                        end
+                    end
+                    return npc, island, "Boss"
+                end
+            end
+        end
+	end
 
     for _, npc in pairs(PATH.Mobs:GetChildren()) do
         if npc.Name:lower():find(workspaceName:lower()) then
