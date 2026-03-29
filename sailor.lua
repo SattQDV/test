@@ -2404,18 +2404,21 @@ local function HandleSummons()
             local isUseTurn = (current >= (max - 1))
             
             if isUseTurn then
-                local found = false
-                for _, v in pairs(PATH.Mobs:GetChildren()) do
-                    if MatchName(v.Name, useName) or v.Name:lower():find(useName:lower():gsub("%s+", "")) then
-                        found = true break
-                    end
-                end
-
-                if not found and IsSummonable(useName) then
-                    FireBossRemote(useName, Options.SelectedPityDiff.Value or "Normal")
-                    task.wait(0.5)
-                    return 
-                end
+                for _, npc in pairs(PATH.Mobs:GetChildren()) do
+            		local name = npc.Name
+            		if name:find("Boss") and name:find("Shinobi") and not table.find(Tables.MiniBossList, name) then
+                		if IsValidTarget(npc) then
+                    		local island = "Boss"
+                    		for dName, iName in pairs(Shared.BossTIMap) do
+                        		if IsStrictBossMatch(name, dName) then
+                            		island = iName
+                            		break
+                        		end
+                    		end
+                    		return npc, island, "Boss"
+                		end
+            		end
+        		end
             else
                 local anyBuildBossSpawned = false
                 for bossName, enabled in pairs(buildOptions) do
