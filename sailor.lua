@@ -3104,6 +3104,8 @@ local function GetSummonTarget()
     if not selected then return nil end
 
     local workspaceName = SummonMap[selected] or (selected .. "Boss")
+	local current, max = GetCurrentPity()
+	if (current >= (max - 1)) then return nil end
 
     for _, npc in pairs(PATH.Mobs:GetChildren()) do
         if npc.Name:lower():find(workspaceName:lower()) then
