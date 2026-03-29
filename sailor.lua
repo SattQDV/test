@@ -3121,6 +3121,7 @@ local function GetSummonTarget()
                 end
             end
         end
+		return nil
 	end
 
     for _, npc in pairs(PATH.Mobs:GetChildren()) do
