@@ -3127,7 +3127,6 @@ local function GetSummonTarget()
     for _, npc in pairs(PATH.Mobs:GetChildren()) do
         if npc.Name:lower():find(workspaceName:lower()) then
             if IsValidTarget(npc) then
-				task.wait(0.5)
                 return npc, "Boss", "Boss"
             end
         end
@@ -3335,6 +3334,7 @@ local function Func_KillAura()
 end
 
 local function ExecuteFarmLogic(target, island, farmType)
+	task.wait(0.4)
     local char = GetCharacter()
     local root = char and char:FindFirstChild("HumanoidRootPart")
     if not char or not target or Shared.Recovering or not root then return end
