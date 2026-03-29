@@ -2970,7 +2970,7 @@ local function GetPityTarget()
     local useName = Options.SelectedUsePity.Value
     if not useName then return nil end
 
-    local isUseTurn = (current >= (max - 8))
+    local isUseTurn = (current >= (max - 1)) or (current <= (max - 9))
     
     if isUseTurn then
         for _, npc in pairs(PATH.Mobs:GetChildren()) do
