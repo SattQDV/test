@@ -4350,8 +4350,8 @@ local function Func_ArtifactAutomation()
 end
 
 local Window = Library:CreateWindow({
-	Title = "celina",
-	Footer = "" .. assetName .. " | by celina | LOVE YOU",
+	Title = "Satt",
+	Footer = "" .. assetName .. " | modified by Satt",
 	NotifySide = "Right",
     Icon = tostring(theChosenOne),
 	ShowCustomCursor = false,
