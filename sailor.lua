@@ -3127,6 +3127,7 @@ local function GetSummonTarget()
     for _, npc in pairs(PATH.Mobs:GetChildren()) do
         if npc.Name:lower():find(workspaceName:lower()) then
             if IsValidTarget(npc) then
+				task.wait(0.5)
                 return npc, "Boss", "Boss"
             end
         end
