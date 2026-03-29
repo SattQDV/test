@@ -3334,7 +3334,7 @@ local function Func_KillAura()
 end
 
 local function ExecuteFarmLogic(target, island, farmType)
-	task.wait(0.4)
+	task.wait(0.55)
     local char = GetCharacter()
     local root = char and char:FindFirstChild("HumanoidRootPart")
     if not char or not target or Shared.Recovering or not root then return end
