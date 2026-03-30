@@ -2469,21 +2469,25 @@ local function HandleSummons()
     end
 
     if Toggles.AutoSummon.Value then
-        local selected = Options.SelectedSummon.Value
-        if selected then
-            local found = false
-            for _, v in pairs(PATH.Mobs:GetChildren()) do
-                if IsStrictBossMatch(v.Name, selected) then
-                    found = true break
-                end
-            end
+    	local selected = Options.SelectedSummon.Value
+    	local current, max = GetCurrentPity()
+    	if current >= (max - 1) then
+        	selected = Options.SelectedSummon3.Value
+    	end
+    	if selected then
+        	local found = false
+        	for _, v in pairs(PATH.Mobs:GetChildren()) do
+            	if IsStrictBossMatch(v.Name, selected) then
+                	found = true break
+            	end
+        	end
 
-            if not found then
-                FireBossRemote(selected, Options.SelectedSummonDiff.Value or "Normal")
-                task.wait(0.5)
-            end
-        end
-    end
+        	if not found then
+            	FireBossRemote(selected, Options.SelectedSummonDiff.Value or "Normal")
+            	task.wait(0.5)
+        	end
+    	end
+	end
 end
 
 local function UpdateSwitchState(target, farmType)
@@ -3108,7 +3112,8 @@ local function GetSummonTarget()
 	if (current >= (max - 1)) then
 		for _, npc in pairs(PATH.Mobs:GetChildren()) do
             local name = npc.Name
-            if name:find("Boss") and name:find("Shinobi") and not table.find(Tables.MiniBossList, name) then
+            local shinobiFilter = Options.ShinobiName.Value or "Shinobi"
+			if name:find("Boss") and name:find(shinobiFilter) and not table.find(Tables.MiniBossList, name) then
                 if IsValidTarget(npc) then
                     local island = "Boss"
                     for dName, iName in pairs(Shared.BossTIMap) do
@@ -4786,6 +4791,22 @@ TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummon", {
     Default = nil,
     Multi = false,
     Searchable = true,
+})
+		
+TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummon3", {
+    Text = "Select Summon Boss [Pity]",
+    Values = Tables.SummonList,
+    Default = nil,
+    Multi = false,
+    AllowNull = true,
+    Searchable = true,
+})
+
+TB_Tabs.Autofarm.T4:AddInput("ShinobiName", {
+    Text = "Pity Boss Name Filter",
+    Default = "Shinobi",
+    Placeholder = "e.g. Shinobi",
+    Finished = false,
 })
 
 TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummonDiff", {
