@@ -4802,11 +4802,12 @@ TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummon3", {
     Searchable = true,
 })
 
-TB_Tabs.Autofarm.T4:AddInput("ShinobiName", {
+TB_Tabs.Autofarm.T2:AddInput("ShinobiName", {
     Text = "Pity Boss Name Filter",
     Default = "Shinobi",
     Placeholder = "e.g. Shinobi",
     Finished = false,
+	ClearTextOnFocus = true,
 })
 
 TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummonDiff", {
