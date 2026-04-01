@@ -1081,7 +1081,7 @@ local function PostToWebhook()
     local payload = {
         ["embeds"] = {{
             ["description"] = desc,
-            ["color"] = tonumber("ffff77", 16),
+            ["color"] = tonumber("c8155d", 16),
             ["footer"] = { ["text"] = string.format("%s | %s • %s", Plr.Name, GetSessionTime(), os.date("%x %X")) },
             ["thumbnail"] = { ["url"] = catLink }
         }}
