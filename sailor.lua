@@ -6518,7 +6518,10 @@ task.spawn(function()
 
         if tick() - Shared.KillTick < (tonumber(Options.TargetTPCD.Value) or 0) then continue end
 
-        HandleSummons()
+		HandleSummons()
+
+		local prevTargetDead = not Shared.Target or not Shared.Target.Parent or 
+    (Shared.Target:FindFirstChildOfClass("Humanoid") and Shared.Target:FindFirstChildOfClass("Humanoid").Health <= 0)
 
         local currentPity, maxPity = GetCurrentPity()
         local isPityReady = Toggles.PityBossFarm.Value and currentPity >= (maxPity - 1)
@@ -6546,18 +6549,25 @@ task.spawn(function()
                 end
 
                 local t, isl, fType = CheckTask(taskName)
-								if t then
- 				   				foundTask = true
-    							if typeof(t) == "Instance" and t ~= Shared.Target then
-        						task.wait(0.4)
-    							end
-    							Shared.Target = (typeof(t) == "Instance") and t or nil
-    							Shared.TargetValid = true
-   								UpdateSwitchState(t, fType)
-    							if taskName ~= "Merchant" then ExecuteFarmLogic(t, isl, fType) end
-    							break 
-								end
-            end
+				if t then
+    				if not prevTargetDead and typeof(t) == "Instance" and t == Shared.Target then
+        				foundTask = true
+        				UpdateSwitchState(t, fType)
+       					ExecuteFarmLogic(t, isl, fType)
+        				break
+    				elseif prevTargetDead then
+        				foundTask = true
+        				if typeof(t) == "Instance" and t ~= Shared.Target then
+            				task.wait(0.4)
+        				end
+        				Shared.Target = (typeof(t) == "Instance") and t or nil
+        				Shared.TargetValid = true
+        				UpdateSwitchState(t, fType)
+        				if taskName ~= "Merchant" then ExecuteFarmLogic(t, isl, fType) end
+        				break
+    				end
+				end
+			end
         end
 
         if not foundTask then
