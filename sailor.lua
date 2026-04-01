@@ -777,7 +777,7 @@ local function GetFormattedItemSections(itemSourceTable, isNewItems)
             end
         end
 
-        local entryText = isNewItems and string.format("+ [%d] %s [Total: %s]", qty, name, CommaFormat(totalInInv)) or string.format("- %s: %s", name, CommaFormat(qty))
+        local entryText = isNewItems and string.format("* [%s] %s [+ %d]", CommaFormat(totalInInv), name, qty) or string.format("* %s: %s", name, CommaFormat(qty))
 
         if name:find("Chest") or name == "Aura Crate" or name == "Cosmetic Crate" then
             local weight = 99
@@ -1025,7 +1025,7 @@ local function PostToWebhook()
     local lstats = Plr:FindFirstChild("leaderstats")
     local bounty = lstats and lstats:FindFirstChild("Bounty") and lstats.Bounty.Value or 0
     
-    local desc = "### Sailor Piece\n"
+    local desc = "### Hàng nónggg\n"
     
     if selected["Name"] then
         desc = desc .. string.format("\n👤 **Player:** ||%s||\n", Plr.Name)
@@ -1082,7 +1082,7 @@ local function PostToWebhook()
         ["embeds"] = {{
             ["description"] = desc,
             ["color"] = tonumber("ffff77", 16),
-            ["footer"] = { ["text"] = string.format("celina • Session: %s • %s", GetSessionTime(), os.date("%x %X")) },
+            ["footer"] = { ["text"] = string.format("%s | %s • %s", Plr.Name, GetSessionTime(), os.date("%x %X")) },
             ["thumbnail"] = { ["url"] = catLink }
         }}
     }
