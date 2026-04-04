@@ -4767,14 +4767,6 @@ TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummon", {
     Searchable = true,
 })
 
-TB_Tabs.Autofarm.T2:AddInput("ShinobiName", {
-    Text = "Pity Boss Name Filter",
-    Default = "Shinobi",
-    Placeholder = "e.g. Shinobi",
-    Finished = false,
-	ClearTextOnFocus = true,
-})
-
 TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummonDiff", {
     Text = "Select Difficulty",
     Values = Tables.DiffList,
