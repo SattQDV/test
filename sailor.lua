@@ -4767,6 +4767,15 @@ TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummon", {
     Searchable = true,
 })
 
+TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummon3", {
+    Text = "Select Summon Boss [Pity]",
+    Values = Tables.SummonList,
+    Default = nil,
+    Multi = false,
+    AllowNull = true,
+    Searchable = true,
+})
+
 TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummonDiff", {
     Text = "Select Difficulty",
     Values = Tables.DiffList,
