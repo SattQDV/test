@@ -441,7 +441,7 @@ local IslandCrystals = {
     ["Shibuya"] = workspace:FindFirstChild("ShibuyaStation") and workspace.ShibuyaStation:FindFirstChild("SpawnPointCrystal_Shibuya"),
     ["Hollow"] = workspace:FindFirstChild("HollowIsland") and workspace.HollowIsland:FindFirstChild("SpawnPointCrystal_HollowIsland"),
     ["Boss"] = workspace:FindFirstChild("BossIsland") and workspace.BossIsland:FindFirstChild("SpawnPointCrystal_Boss"),
-    ["Dungeon"] = workspace:FindFirstChild("Main Temple") and workspace["Main Temple"]:FindFirstChild("SpawnPointCrystal_Dungeon"),
+    ["Dungeon"] = workspace:FindFirstChild("DungeonIsland") and workspace.DungeonIsland:FindFirstChild("SpawnPointCrystal_Dungeon"),
     ["Shinjuku"] = workspace:FindFirstChild("ShinjukuIsland") and workspace.ShinjukuIsland:FindFirstChild("SpawnPointCrystal_Shinjuku"),
     ["Valentine"] = workspace:FindFirstChild("ValentineIsland") and workspace.ValentineIsland:FindFirstChild("SpawnPointCrystal_Valentine"),
     ["Slime"] = workspace:FindFirstChild("SlimeIsland") and workspace.SlimeIsland:FindFirstChild("SpawnPointCrystal_Slime"),
@@ -531,13 +531,10 @@ for statKey, data in pairs(Modules.ArtifactConfig.Stats) do table.insert(allStat
 
 if Modules.TimedConfig and Modules.TimedConfig.Bosses then
     for internalName, data in pairs(Modules.TimedConfig.Bosses) do
-        table.insert(Tables.BossList, data.displayName)
+        table.insert(Tables.BossList, data.modelName)
         
         local tpName = data.spawnLocation:gsub(" Island", ""):gsub(" Station", "")
-        if data.spawnLocation == "Hueco Mundo Island" then tpName = "HuecoMundo" end
-        if data.spawnLocation == "Judgement Island" then tpName = "Judgement" end
-        
-        Shared.BossTIMap[data.displayName] = tpName
+        Shared.BossTIMap[data.modelName] = tpName
     end
     table.sort(Tables.BossList)
 end
@@ -3105,26 +3102,6 @@ local function GetSummonTarget()
     if not selected then return nil end
 
     local workspaceName = SummonMap[selected] or (selected .. "Boss")
-	local current, max = GetCurrentPity()
-	if (current >= (max - 1)) then
-		for _, npc in pairs(PATH.Mobs:GetChildren()) do
-            local name = npc.Name
-            local shinobiFilter = Options.ShinobiName.Value or "Shinobi"
-			if name:find("Boss") and name:find(shinobiFilter) and not table.find(Tables.MiniBossList, name) then
-                if IsValidTarget(npc) then
-                    local island = "Boss"
-                    for dName, iName in pairs(Shared.BossTIMap) do
-                        if IsStrictBossMatch(name, dName) then
-                            island = iName
-                            break
-                        end
-                    end
-                    return npc, island, "Boss"
-                end
-            end
-        end
-		return nil
-	end
 
     for _, npc in pairs(PATH.Mobs:GetChildren()) do
         if npc.Name:lower():find(workspaceName:lower()) then
@@ -4787,15 +4764,6 @@ TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummon", {
     Values = Tables.SummonList,
     Default = nil,
     Multi = false,
-    Searchable = true,
-})
-		
-TB_Tabs.Autofarm.T2:AddDropdown("SelectedSummon3", {
-    Text = "Select Summon Boss [Pity]",
-    Values = Tables.SummonList,
-    Default = nil,
-    Multi = false,
-    AllowNull = true,
     Searchable = true,
 })
 
