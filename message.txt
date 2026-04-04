@@ -1,4 +1,4 @@
-if getgenv().celina_Running then
+if getgenv().Satt_Running then
     warn("Script already running!")
     return
 end
@@ -84,7 +84,7 @@ local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
 local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
 local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
 
-getgenv().celina_Running = true
+getgenv().Satt_Running = true
 
 local Options = Library.Options
 local Toggles = Library.Toggles
@@ -439,7 +439,7 @@ local IslandCrystals = {
     ["Snow"] = workspace:FindFirstChild("SnowIsland") and workspace.SnowIsland:FindFirstChild("SpawnPointCrystal_Snow"),
     ["Sailor"] = workspace:FindFirstChild("SailorIsland") and workspace.SailorIsland:FindFirstChild("SpawnPointCrystal_Sailor"),
     ["Shibuya"] = workspace:FindFirstChild("ShibuyaStation") and workspace.ShibuyaStation:FindFirstChild("SpawnPointCrystal_Shibuya"),
-    ["HuecoMundo"] = workspace:FindFirstChild("HuecoMundo") and workspace.HuecoMundo:FindFirstChild("SpawnPointCrystal_HuecoMundo"),
+    ["Hollow"] = workspace:FindFirstChild("HollowIsland") and workspace.HollowIsland:FindFirstChild("SpawnPointCrystal_HollowIsland"),
     ["Boss"] = workspace:FindFirstChild("BossIsland") and workspace.BossIsland:FindFirstChild("SpawnPointCrystal_Boss"),
     ["Dungeon"] = workspace:FindFirstChild("Main Temple") and workspace["Main Temple"]:FindFirstChild("SpawnPointCrystal_Dungeon"),
     ["Shinjuku"] = workspace:FindFirstChild("ShinjukuIsland") and workspace.ShinjukuIsland:FindFirstChild("SpawnPointCrystal_Shinjuku"),
@@ -448,9 +448,9 @@ local IslandCrystals = {
     ["Academy"] = workspace:FindFirstChild("AcademyIsland") and workspace.AcademyIsland:FindFirstChild("SpawnPointCrystal_Academy"),
     ["Judgement"] = workspace:FindFirstChild("JudgementIsland") and workspace.JudgementIsland:FindFirstChild("SpawnPointCrystal_Judgement"),
     ["SoulDominion"] = workspace:FindFirstChild("SoulDominionIsland") and workspace.SoulDominionIsland:FindFirstChild("SpawnPointCrystal_SoulDominion"),
-    ["NinjaIsland"] = workspace:FindFirstChild("NinjaIsland") and workspace.NinjaIsland:FindFirstChild("SpawnPointCrystal_Ninja"),
-    ["LawlessIsland"] = workspace:FindFirstChild("LawlessIsland") and workspace.LawlessIsland:FindFirstChild("SpawnPointCrystal_Lawless"),
-    ["TowerIsland"] = workspace:FindFirstChild("TowerIsland") and workspace.TowerIsland:FindFirstChild("SpawnPointCrystal_Tower"),
+    ["Ninja"] = workspace:FindFirstChild("NinjaIsland") and workspace.NinjaIsland:FindFirstChild("SpawnPointCrystal_Ninja"),
+    ["Lawless"] = workspace:FindFirstChild("LawlessIsland") and workspace.LawlessIsland:FindFirstChild("SpawnPointCrystal_Lawless"),
+    ["Tower"] = workspace:FindFirstChild("TowerIsland") and workspace.TowerIsland:FindFirstChild("SpawnPointCrystal_Tower"),
 }
     
 local Connections = {
@@ -512,7 +512,7 @@ local Tables = {
 
     OwnedItem = {},
 
-  IslandList = {"Starter", "Jungle", "Desert", "Snow", "Sailor", "Shibuya", "HuecoMundo", "Boss", "Dungeon", "Shinjuku", "Valentine", "Slime", "Academy", "Judgement", "SoulSociety", "Tower"},
+  IslandList = {"Starter", "Jungle", "Desert", "Snow", "Sailor", "Shibuya", "Hollow", "Boss", "Dungeon", "Shinjuku", "Valentine", "Slime", "Academy", "Judgement", "SoulDominion", "Tower"},
   NPC_QuestList = {"DungeonUnlock", "SlimeKeyUnlock"},
   NPC_MiscList = {"Artifacts", "Blessing", "Enchant", "SkillTree", "Cupid", "ArmHaki", "Observation", "Conqueror"},
   DungeonList = {"CidDungeon", "RuneDungeon", "DoubleDungeon", "BossRush", "InfiniteTower"},
@@ -534,9 +534,7 @@ if Modules.TimedConfig and Modules.TimedConfig.Bosses then
         table.insert(Tables.BossList, data.displayName)
         
         local tpName = data.spawnLocation:gsub(" Island", ""):gsub(" Station", "")
-        if data.spawnLocation == "Hueco Mundo Island" then tpName = "HuecoMundo" end
-        if data.spawnLocation == "Judgement Island" then tpName = "Judgement" end
-        
+
         Shared.BossTIMap[data.displayName] = tpName
     end
     table.sort(Tables.BossList)
@@ -1025,7 +1023,7 @@ local function PostToWebhook()
     local lstats = Plr:FindFirstChild("leaderstats")
     local bounty = lstats and lstats:FindFirstChild("Bounty") and lstats.Bounty.Value or 0
     
-    local desc = "### Sailor Piece\n"
+    local desc = "### Hàng nónggg\n"
     
     if selected["Name"] then
         desc = desc .. string.format("\n👤 **Player:** ||%s||\n", Plr.Name)
@@ -1081,8 +1079,8 @@ local function PostToWebhook()
     local payload = {
         ["embeds"] = {{
             ["description"] = desc,
-            ["color"] = tonumber("ffff77", 16),
-            ["footer"] = { ["text"] = string.format("celina • Session: %s • %s", GetSessionTime(), os.date("%x %X")) },
+            ["color"] = tonumber("c8155d", 16),
+            ["footer"] = { ["text"] = string.format("%s | %s • %s", Plr.Name, GetSessionTime(), os.date("%x %X")) },
             ["thumbnail"] = { ["url"] = catLink }
         }}
     }
@@ -1511,7 +1509,7 @@ local function SendSafetyWebhook(targetPlayer, reason)
                 { ["name"] = "Type", ["value"] = reason, ["inline"] = true },
                 { ["name"] = "ID", ["value"] = "```" .. game.JobId .. "```", ["inline"] = false }
             },
-            ["footer"] = { ["text"] = "celina • " .. os.date("%x %X") }
+            ["footer"] = { ["text"] = "Satt • " .. os.date("%x %X") }
         }}
     }
 
@@ -1552,7 +1550,7 @@ local function CheckServerTypeSafety()
                             { ["name"] = "Username", ["value"] = "`" .. Plr.Name .. "`", ["inline"] = true },
                             { ["name"] = "JobId", ["value"] = "```" .. game.JobId .. "```", ["inline"] = false }
                         },
-                        ["footer"] = { ["text"] = "celina" }
+                        ["footer"] = { ["text"] = "Satt" }
                     }}
                 }
                 task.spawn(function()
@@ -1568,7 +1566,7 @@ local function CheckServerTypeSafety()
             end
 
             task.wait(0.8)
-            Plr:Kick("\n[celina]\nReason: You are in a public server.")
+            Plr:Kick("\n[Satt]\nReason: You are in a public server.")
         end
     end
 end
@@ -1583,7 +1581,7 @@ local function CheckPlayerForSafety(targetPlayer)
         SendSafetyWebhook(targetPlayer, "Player Join Detection")
         
         task.wait(0.5) 
-        Plr:Kick("\n[celina]\nReason: A player joined the server (" .. targetPlayer.Name .. ")")
+        Plr:Kick("\n[Satt]\nReason: A player joined the server (" .. targetPlayer.Name .. ")")
         return
     end
 
@@ -1593,7 +1591,7 @@ local function CheckPlayerForSafety(targetPlayer)
             SendSafetyWebhook(targetPlayer, "Moderator Detection (Rank: " .. tostring(rank) .. ")")
             
             task.wait(0.5)
-            Plr:Kick("\n[celina]\nReason: Moderator Detected (" .. targetPlayer.Name .. ")")
+            Plr:Kick("\n[Satt]\nReason: Moderator Detected (" .. targetPlayer.Name .. ")")
         end
     end
 end
@@ -3124,8 +3122,10 @@ local function GetWorldBossTarget()
         for bossDisplayName, isEnabled in pairs(selected) do
             if isEnabled then
                 for _, npc in pairs(PATH.Mobs:GetChildren()) do
-                    if IsStrictBossMatch(npc.Name, bossDisplayName) and not table.find(Tables.MiniBossList, npc.Name) then
-                        if IsValidTarget(npc) then
+                    if IsValidTarget(npc) and not table.find(Tables.MiniBossList, npc.Name) then
+                        if IsStrictBossMatch(npc.Name, bossDisplayName) then
+                            print(bossDisplayName)
+                            print(BossTIMap)
                             local island = Shared.BossTIMap[bossDisplayName] or "Boss"
                             return npc, island, "Boss"
                         end
@@ -4330,8 +4330,8 @@ local function Func_ArtifactAutomation()
 end
 
 local Window = Library:CreateWindow({
-	Title = "celina",
-	Footer = "" .. assetName .. " | by celina | LOVE YOU",
+	Title = "Satt",
+	Footer = "" .. assetName .. " | modified by Satt",
 	NotifySide = "Right",
     Icon = tostring(theChosenOne),
 	ShowCustomCursor = false,
@@ -4535,7 +4535,7 @@ TimeLabel = GB.Information.Left.User:AddLabel("<b>Time Left:</b> " .. initTime)
 
 task.spawn(function()
     while task.wait(5) do
-        if not getgenv().celina_Running then break end
+        if not getgenv().Satt_Running then break end
         
         local tier, timeLeft = GetData()
         
@@ -6350,7 +6350,7 @@ Remotes.UpAscend.OnClientEvent:Connect(function(data)
 end)
 
 task.spawn(function()
-    while getgenv().celina_Running do
+    while getgenv().Satt_Running do
         if Remotes.ReqInventory then
             Remotes.ReqInventory:FireServer()
         end
@@ -6360,7 +6360,7 @@ end)
 
 task.spawn(function()
     while task.wait(1) do
-        if not getgenv().celina_Running then break end
+        if not getgenv().Satt_Running then break end
         
         pcall(function()
             if PityLabel then
@@ -6507,7 +6507,7 @@ end)
 
 task.spawn(function()
     while task.wait(1) do
-        if not getgenv().celina_Running then break end
+        if not getgenv().Satt_Running then break end
         
         local char = GetCharacter()
         local root = char and char:FindFirstChild("HumanoidRootPart")
@@ -6584,7 +6584,7 @@ MenuGroup:AddLabel("Menu bind")
 	:AddKeyPicker("MenuKeybind", { Default = "U", NoUI = true, Text = "Menu keybind" })
 
 MenuGroup:AddButton("Unload", function()
-    getgenv().celina_Running = false
+    getgenv().Satt_Running = false
     Shared.Farm = false
     Cleanup(Connections)
     Cleanup(Flags)
@@ -6606,8 +6606,8 @@ SaveManager:SetIgnoreIndexes({ "SelectedMovesetNPC" })
 SaveManager:SetIgnoreIndexes({ "SelectedMasteryNPC" })
 
 
-ThemeManager:SetFolder("celina")
-SaveManager:SetFolder("celina/SailorPiece")
+ThemeManager:SetFolder("Satt")
+SaveManager:SetFolder("Satt/SailorPiece")
 
 SaveManager:BuildConfigSection(Tabs.Config)
 
